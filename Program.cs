@@ -1,3 +1,6 @@
+using BAMS.Databse;
+using Microsoft.EntityFrameworkCore;
+
 namespace BAMS
 {
     public class Program
@@ -7,12 +10,13 @@ namespace BAMS
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionMSSQL")));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+             
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
