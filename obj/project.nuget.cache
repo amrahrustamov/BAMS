@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "5kkyXmevMUpgZ/02QIoYu0IDsrSQnjkIvG9+4FkheJp0kZHg3M8nwWpz5Lf/g54PAKbuMtggtU8q5n5VKA9tDg==",
+  "dgSpecHash": "8chUFamfPEig7tJh3DMnQjHMNzIxnCh/tGJKql1Eq8fphPY8mPV7xe5P6V5QWO71gP3Rd31IvXToeKQ89Wg0YQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Amrah\\Desktop\\BAMS\\BAMS.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Amrah\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
     "C:\\Users\\Amrah\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Amrah\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Amrah\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.7\\microsoft.data.sqlclient.2.1.7.nupkg.sha512",
