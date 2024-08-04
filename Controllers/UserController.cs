@@ -7,6 +7,7 @@ using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BAMS.Controllers
 {
@@ -16,6 +17,8 @@ namespace BAMS.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly ICheck _checking;
+        public List<PropertyTaxViewModel> _properties = new List<PropertyTaxViewModel>();
+        public List<LandTaxViewModel> _lands = new List<LandTaxViewModel>();
 
         public UserController(IConfiguration configuration, ICheck check)
         {
@@ -42,11 +45,31 @@ namespace BAMS.Controllers
 
                 if (_checking.TaxPayerIsNull(taxpayer)) return NotFound(new { message = "Bu FİN kod ilə vergi ödəyicisi tapılmadı!" });
 
-
                 var residentialPropertyTax = await connection.QueryAsync<PropertyTax>("Select ROW_NUMBER() over (order by livingAreaid) sn,RegistrDate1, DocumentNumber, RegisterDocumentNumber, " +
                                                                     "GivingDate1,unvan, Zonaname, TaxRate, GeneralArea, DiffGeneralArea, mebleg, N'Yaşayış sahəsi üzrə əmlak vergisi' VergiNov " +
                                                                     "from viewLivingProperty where ExitDate is null and " +
                                                                     $"TaxPayerId={taxpayer.TaxpayerID}");
+
+                List<PropertyTax> properties = residentialPropertyTax.ToList();
+                foreach (var item in properties)
+                {
+                    PropertyTaxViewModel propertyTaxViewModel = new PropertyTaxViewModel
+                    {
+                         S_N = item.sn,
+                         Sənədin_Reyestr_Nömrəsi= item.DocumentNumber,
+                         Mülkiyyət_Sənədinin_Verilmə_Tarixi = item.GivingDate1,
+                         Vergiyə_Cəlb_Edilən_Sahə = item.DiffGeneralArea,
+                         Məbləğ = item.mebleg,
+                         Ümumi_Sahə = item.GeneralArea,
+                         Qeydiyyat_Nömrəsi = item.RegisterDocumentNumber,
+                         Verginin_Hesablanma_Tarixi = item.RegistrDate1,
+                         Vergi_Dərəcəsi = item.TaxRate,
+                         Vergi_Növü = item.VergiNov,
+                         Yerləşdiyi_Ünvan = item.unvan,
+                         Zona_Əmsalı = item.Zonaname,
+                    };
+                    _properties.Add(propertyTaxViewModel);
+                }
 
                 TaxPayerByPropertyTax taxPayerByPropertyTax = new TaxPayerByPropertyTax
                 {
@@ -62,7 +85,7 @@ namespace BAMS.Controllers
                     Bələdiyyə_VOEN = taxpayer.VOEN,
                     YVOK = taxpayer.YVOK,
                     V_O_VOEN = taxpayer.VergiOdeyiciVoen,
-                    PropertyTaxes = residentialPropertyTax.ToList(),
+                    PropertyTaxes = _properties.ToList(),
                 };
 
                 return Ok(taxPayerByPropertyTax);
@@ -89,26 +112,46 @@ namespace BAMS.Controllers
 
                 if (_checking.TaxPayerIsNull(taxpayer)) return NotFound(new { message = "Bu FİN kod ilə vergi ödəyicisi tapılmadı!" });
 
-                var residentialLandTax = await connection.QueryAsync<LandTax>("Select ROW_NUMBER() over (order by livingAreaid) sn,RegistrDate1, DocumentNumber, RegisterDocumentNumber, " +
-                                                                    "GivingDate1,unvan, Zonaname, TaxRate, GeneralArea, DiffGeneralArea, mebleg, N'Yaşayış sahəsi üzrə əmlak vergisi' VergiNov " +
-                                                                    "from viewLivingProperty where ExitDate is null and " +
+                var residentialLandTax = await connection.QueryAsync<LandTax>("Select ROW_NUMBER() over (order by livingAreaid) sn,RegistrDate1, Name, DocumentNumber, RegisterDocumentNumber, " +
+                                                                    "GivingDate1,unvan, TaxRate, GeneralArea, Mebleg, N'Yaşayış sahəsi üzrə torpaq vergisi' VergiNov " +
+                                                                    "from viewLivingLand where ExitDate is null and " +
                                                                      $"TaxPayerId={taxpayer.TaxpayerID}");
+
+                List<LandTax> landTax = residentialLandTax.ToList();
+
+                foreach (var item in landTax)
+                {
+                    LandTaxViewModel land = new LandTaxViewModel
+                    {
+                        S_N = item.sn,
+                        Mülkiyyət_Sənədinin_Verilmə_Tarixi = item.GivingDate1,
+                        Məbləğ = item.Mebleg,
+                        Vergi_Dərəcəsi = item.TaxRate,
+                        Sənədin_Reyestr_Nömrəsi = item.DocumentNumber,
+                        Qeydiyyat_Nömrəsi = item.RegisterDocumentNumber,
+                        Yerləşdiyi_Ünvan = item.unvan,
+                        Verginin_Hesablanma_Tarixi = item.RegistrDate1,
+                        Ümumi_Sahə = item.GeneralArea,
+                        Torpağın_İstifadə_Növü = item.Name,
+                    };
+                    _lands.Add(land);
+                };
+
                 TaxPayerByLandTax taxPayerByLandTax = new TaxPayerByLandTax
                 {
-                    Concession = taxpayer.Concession,
-                    ConcesionNumber = taxpayer.ConcesionNumber,
-                    ConcessionCause = taxpayer.ConcessionCause,
-                    ConcessionGiveDate = taxpayer.ConcessionGiveDate,
-                    ConcessionGiveOrgan = taxpayer.ConcessionGiveOrgan,
-                    ConcessionSeries = taxpayer.ConcessionSeries,
-                    Municipal_code = taxpayer.Municipal_code,
-                    Individual_Legal = taxpayer.Individual_Legal,
-                    MunicipalName = taxpayer.MunicipalName,
-                    TaxpayerID = taxpayer.TaxpayerID,
-                    VOEN = taxpayer.VOEN,
+                    Vergi_Ödəyicisinin_Güzəşti_Barədə_Məlumat = taxpayer.Concession == "1" ? "Güzəştsiz" : "Güzəştli",
+                    Güzəşt_Sənədinin_Nömrəsi = taxpayer.ConcesionNumber,
+                    Güzəştin_Səbəbi = taxpayer.ConcessionCause,
+                    Güzəşt_Sənədinin_Verilmə_Tarixi = taxpayer.ConcessionGiveDate,
+                    Güzəşt_Sənədini_Verən_Təşkilat = taxpayer.ConcessionGiveOrgan,
+                    Güzəşt_Sənədinin_Seriyası = taxpayer.ConcessionSeries,
+                    Bələdiyyə_Kodu = taxpayer.Municipal_code,
+                    Vergi_Ödəyicisinin_Statusu = taxpayer.Individual_Legal == "1" ? "Fiziki" : "Huquqi",
+                    Bələdiyyə_Adı = taxpayer.MunicipalName,
+                    Bələdiyyə_VOEN = taxpayer.VOEN,
                     YVOK = taxpayer.YVOK,
-                    VergiOdeyiciVoen = taxpayer.VergiOdeyiciVoen,
-                    LandTaxes = residentialLandTax.ToList(),
+                    V_O_VOEN = taxpayer.VergiOdeyiciVoen,
+                    LandTaxes = _lands.ToList(),
                 };
                 return Ok(taxPayerByLandTax);
             }
