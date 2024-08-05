@@ -73,14 +73,14 @@ namespace BAMS.Controllers
 
                 TaxPayerByPropertyTax taxPayerByPropertyTax = new TaxPayerByPropertyTax
                 {
-                    Vergi_Ödəyicisinin_Güzəşti_Barədə_Məlumat = taxpayer.Concession == "1" ? "Güzəştsiz" : "Güzəştli",
+                    Vergi_Ödəyicisinin_Güzəşti_Barədə_Məlumat = taxpayer.Concession,
                     Güzəşt_Sənədinin_Nömrəsi = taxpayer.ConcesionNumber,
                     Güzəştin_Səbəbi = taxpayer.ConcessionCause,
                     Güzəşt_Sənədinin_Verilmə_Tarixi = taxpayer.ConcessionGiveDate,
                     Güzəşt_Sənədini_Verən_Təşkilat =taxpayer.ConcessionGiveOrgan,
                     Güzəşt_Sənədinin_Seriyası = taxpayer.ConcessionSeries,
                     Bələdiyyə_Kodu = taxpayer.Municipal_code,
-                    Vergi_Ödəyicisinin_Statusu = taxpayer.Individual_Legal == "1" ? "Fiziki" : "Huquqi",
+                    Vergi_Ödəyicisinin_Statusu = taxpayer.Individual_Legal,
                     Bələdiyyə_Adı = taxpayer.MunicipalName,
                     Bələdiyyə_VOEN = taxpayer.VOEN,
                     YVOK = taxpayer.YVOK,
@@ -141,14 +141,14 @@ namespace BAMS.Controllers
 
                 TaxPayerByLandTax taxPayerByLandTax = new TaxPayerByLandTax
                 {
-                    Vergi_Ödəyicisinin_Güzəşti_Barədə_Məlumat = taxpayer.Concession == "1" ? "Güzəştsiz" : "Güzəştli",
+                    Vergi_Ödəyicisinin_Güzəşti_Barədə_Məlumat = taxpayer.Concession,
                     Güzəşt_Sənədinin_Nömrəsi = taxpayer.ConcesionNumber,
                     Güzəştin_Səbəbi = taxpayer.ConcessionCause,
                     Güzəşt_Sənədinin_Verilmə_Tarixi = taxpayer.ConcessionGiveDate,
                     Güzəşt_Sənədini_Verən_Təşkilat = taxpayer.ConcessionGiveOrgan,
                     Güzəşt_Sənədinin_Seriyası = taxpayer.ConcessionSeries,
                     Bələdiyyə_Kodu = taxpayer.Municipal_code,
-                    Vergi_Ödəyicisinin_Statusu = taxpayer.Individual_Legal == "1" ? "Fiziki" : "Huquqi",
+                    Vergi_Ödəyicisinin_Statusu = taxpayer.Individual_Legal,
                     Bələdiyyə_Adı = taxpayer.MunicipalName,
                     Bələdiyyə_VOEN = taxpayer.VOEN,
                     YVOK = taxpayer.YVOK,
