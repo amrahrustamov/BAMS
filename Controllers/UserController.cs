@@ -46,7 +46,7 @@ namespace BAMS.Controllers
                 if (_checking.TaxPayerIsNull(taxpayer)) return NotFound(new { message = "Bu FİN kod ilə vergi ödəyicisi tapılmadı!" });
 
                 var residentialPropertyTax = await connection.QueryAsync<PropertyTax>("Select ROW_NUMBER() over (order by livingAreaid) sn,RegistrDate1, DocumentNumber, RegisterDocumentNumber, " +
-                                                                    "GivingDate1,unvan, Zonaname, TaxRate, GeneralArea, DiffGeneralArea, mebleg, N'Yaşayış sahəsi üzrə əmlak vergisi' VergiNov " +
+                                                                    "GivingDate1,unvan, Zona, TaxRate, GeneralArea, DiffGeneralArea, mebleg, N'Yaşayış sahəsi üzrə əmlak vergisi' VergiNov " +
                                                                     "from viewLivingProperty where ExitDate is null and " +
                                                                     $"TaxPayerId={taxpayer.TaxpayerID}");
 
@@ -66,7 +66,7 @@ namespace BAMS.Controllers
                          Vergi_Dərəcəsi = item.TaxRate,
                          Vergi_Növü = item.VergiNov,
                          Yerləşdiyi_Ünvan = item.unvan,
-                         Zona_Əmsalı = item.Zonaname,
+                         Zona_Əmsalı = item.Zona,
                     };
                     _properties.Add(propertyTaxViewModel);
                 }
@@ -115,7 +115,7 @@ namespace BAMS.Controllers
                 var residentialLandTax = await connection.QueryAsync<LandTax>("Select ROW_NUMBER() over (order by livingAreaid) sn,RegistrDate1, DocumentNumber, RegisterDocumentNumber, " +
                                                                     "GivingDate1,unvan, TaxRate, GeneralArea, TypeUseLand,TypeUseLandFrom, Mebleg, N'Yaşayış sahəsi üzrə torpaq vergisi' VergiNov " +
                                                                     "from viewLivingLand where ExitDate is null and " +
-                                                                     $"TaxPayerId{taxpayer.TaxpayerID}");
+                                                                     $"TaxPayerId={taxpayer.TaxpayerID}");
 
                 List<LandTax> landTax = residentialLandTax.ToList();
 

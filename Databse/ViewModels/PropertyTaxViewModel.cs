@@ -8,7 +8,7 @@
         public string Qeydiyyat_Nömrəsi { get; set; }
         public DateTime Mülkiyyət_Sənədinin_Verilmə_Tarixi { get; set; }
         public string Yerləşdiyi_Ünvan { get; set; }
-        public string Zona_Əmsalı { get; set; }
+        public float Zona_Əmsalı { get; set; }
         public float Vergi_Dərəcəsi { get; set; }
         public float Ümumi_Sahə { get; set; }
         public float Vergiyə_Cəlb_Edilən_Sahə { get; set; }

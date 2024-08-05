@@ -8,7 +8,7 @@
         public string RegisterDocumentNumber { get; set; }
         public DateTime GivingDate1 { get; set; }
         public string unvan { get; set; }
-        public string Zonaname { get; set; }
+        public float Zona { get; set; }
         public float TaxRate { get; set; }
         public float GeneralArea { get; set; }
         public float DiffGeneralArea { get; set;}
