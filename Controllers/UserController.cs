@@ -112,10 +112,10 @@ namespace BAMS.Controllers
 
                 if (_checking.TaxPayerIsNull(taxpayer)) return NotFound(new { message = "Bu FİN kod ilə vergi ödəyicisi tapılmadı!" });
 
-                var residentialLandTax = await connection.QueryAsync<LandTax>("Select ROW_NUMBER() over (order by livingAreaid) sn,RegistrDate1, Name, DocumentNumber, RegisterDocumentNumber, " +
-                                                                    "GivingDate1,unvan, TaxRate, GeneralArea, Mebleg, N'Yaşayış sahəsi üzrə torpaq vergisi' VergiNov " +
+                var residentialLandTax = await connection.QueryAsync<LandTax>("Select ROW_NUMBER() over (order by livingAreaid) sn,RegistrDate1, DocumentNumber, RegisterDocumentNumber, " +
+                                                                    "GivingDate1,unvan, TaxRate, GeneralArea, TypeUseLand,TypeUseLandFrom, Mebleg, N'Yaşayış sahəsi üzrə torpaq vergisi' VergiNov " +
                                                                     "from viewLivingLand where ExitDate is null and " +
-                                                                     $"TaxPayerId={taxpayer.TaxpayerID}");
+                                                                     $"TaxPayerId{taxpayer.TaxpayerID}");
 
                 List<LandTax> landTax = residentialLandTax.ToList();
 
@@ -126,13 +126,15 @@ namespace BAMS.Controllers
                         S_N = item.sn,
                         Mülkiyyət_Sənədinin_Verilmə_Tarixi = item.GivingDate1,
                         Məbləğ = item.Mebleg,
+                        İcarə_verən = item.TypeUseLandFrom,
                         Vergi_Dərəcəsi = item.TaxRate,
                         Sənədin_Reyestr_Nömrəsi = item.DocumentNumber,
                         Qeydiyyat_Nömrəsi = item.RegisterDocumentNumber,
                         Yerləşdiyi_Ünvan = item.unvan,
                         Verginin_Hesablanma_Tarixi = item.RegistrDate1,
                         Ümumi_Sahə = item.GeneralArea,
-                        Torpağın_İstifadə_Növü = item.Name,
+                        Torpağın_İstifadə_Növü = item.TypeUseLand,
+                        Vergi_Növü = item.VergiNov
                     };
                     _lands.Add(land);
                 };

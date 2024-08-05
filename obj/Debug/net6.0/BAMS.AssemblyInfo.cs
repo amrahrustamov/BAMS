@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BAMS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf1f19dbe56ffbfbf91debbf9b38652f2cb39e91")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3294fb92f489dbbc9069242d24dee6bfcce0e79")]
 [assembly: System.Reflection.AssemblyProductAttribute("BAMS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BAMS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
